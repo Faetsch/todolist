@@ -1,6 +1,5 @@
 package entities;
 
-import org.primefaces.model.SelectableDataModel;
 
 public class Task
 {
