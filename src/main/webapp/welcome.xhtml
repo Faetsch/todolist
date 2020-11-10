@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+
+<h:body>
+
+    <style type="text/css">
+        .done {
+            background-color: #00b300 !important;
+            background-image: none !important;
+            color: #000000 !important;
+        }
+        .notDone {
+            background-color: #fca752 !important;
+            background-image: none !important;
+            color: #000000 !important;
+        }
+    </style>
+
+    <h:form id="form">
+        <p:growl id="msgs" showDetail="true"/>
+        <p:dataTable id="tasks" var="task" value="#{tableAddRowView.tasks}" rowKey="#{task.name}"
+                     selection="#{tableAddRowView.selectedTask}" selectionMode="single" editable="true" editMode="cell" widgetVar="tasks" rowStyleClass="#{task.done ? 'done' : 'notDone'}">
+            <f:facet name="header">
+                TODO List
+            </f:facet>
+            <p:ajax event="cellEdit" listener="#{tableAddRowView.onCellEdit}" update=":form:msgs" />
+            <p:column headerText="TODO">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{task.name}" /></f:facet>
+                    <f:facet name="input"><p:inputText id="modelInput" value="#{task.name}" style="width:96%"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="Description">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{task.description}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{task.description}" style="width:96%"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+        </p:dataTable>
+
+        <p:contextMenu for="tasks">
+            <p:menuitem value="Delete" update="tasks" icon="pi pi-times" action="#{tableAddRowView.onDeleteTask}"/>
+            <p:menuitem value="#{task.done ? 'Mark as TODO' : 'Mark as DONE'}" update="tasks" icon="pi pi-check" action="#{tableAddRowView.markRowAsDone}"/>
+        </p:contextMenu>
+
+
+        <p:commandButton value="Add new Task" process="@this" update=":form:msgs"
+                                 action="#{tableAddRowView.onAddNew()}" oncomplete="PF('tasks').addRow();">
+        </p:commandButton>
+
+    </h:form>
+</h:body>
+</html>
