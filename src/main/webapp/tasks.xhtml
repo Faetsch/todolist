@@ -57,6 +57,10 @@
                                  action="#{tableAddRowView.onAddNew()}" oncomplete="PF('tasks').addRow();">
         </p:commandButton>
 
+        <h:form>
+            <p:commandButton value="Logout" action="#{userLogoutView.logout}"/>
+        </h:form>
+
     </h:form>
 </h:body>
 </html>
