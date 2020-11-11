@@ -22,6 +22,10 @@ public class DBIdentityStore implements IdentityStore
         {
             return new CredentialValidationResult("admin", new HashSet<>(Arrays.asList("ADMIN")));
         }
+        else if(login.getCaller().equals("user") && login.getPasswordAsString().equals("test"))
+        {
+            return new CredentialValidationResult("user", new HashSet<>(Arrays.asList("USER")));
+        }
         else return CredentialValidationResult.NOT_VALIDATED_RESULT;
     }
 }
