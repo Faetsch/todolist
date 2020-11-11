@@ -1,10 +1,25 @@
 package entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
+@Entity
 public class Task
 {
     private String name;
     private String description;
+    @Id
+    @GeneratedValue
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     private boolean done = false;
 

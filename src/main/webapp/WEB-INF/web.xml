@@ -18,11 +18,4 @@
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
 
-    <data-source>
-        <name>java:/DemoPostgresDB</name>
-        <class-name>org.postgresql.xa.PGXADataSource</class-name>
-        <url>jdbc:postgresql://localhost:5432/testuser</url>
-        <user>testuser</user>
-        <password>testpw</password>
-    </data-source>
 </web-app>
