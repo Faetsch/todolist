@@ -11,12 +11,11 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Named
 @ViewScoped
-public class TableAddRowView implements Serializable
+public class TaskView implements Serializable
 {
     private List<Task> tasks;
     private Task selectedTask;

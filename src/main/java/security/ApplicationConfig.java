@@ -1,4 +1,4 @@
-package view;
+package security;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.annotation.FacesConfig;

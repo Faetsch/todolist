@@ -1,4 +1,4 @@
-package view;
+package security;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.security.enterprise.credential.Credential;
@@ -18,9 +18,9 @@ public class DBIdentityStore implements IdentityStore
     {
         UsernamePasswordCredential login = (UsernamePasswordCredential) credential;
 
-        if(login.getCaller().equals("larry") && login.getPasswordAsString().equals("berry"))
+        if(login.getCaller().equals("admin") && login.getPasswordAsString().equals("test"))
         {
-            return new CredentialValidationResult("larry", new HashSet<>(Arrays.asList("LARRY")));
+            return new CredentialValidationResult("admin", new HashSet<>(Arrays.asList("ADMIN")));
         }
         else return CredentialValidationResult.NOT_VALIDATED_RESULT;
     }

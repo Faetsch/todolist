@@ -68,7 +68,7 @@ public class UserLoginView
             case SUCCESS:
                 facesContext.addMessage(null,
                         new FacesMessage(FacesMessage.SEVERITY_INFO, "Login succeed", null));
-                externalContext.redirect(externalContext.getRequestContextPath() + "/tasks.xhtml");
+                externalContext.redirect(externalContext.getRequestContextPath() + "/tasks/tasks.xhtml");
                 break;
             case NOT_DONE:
                 break;
