@@ -7,23 +7,21 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-<h:form id="login">
+<h:form id="createuser">
     <p:messages id="messages" globalOnly="true"/>
 
     <h:panelGrid columns="3" cellpadding="5" style="margin: 0 auto;">
 
         <p:outputLabel for="username" value="Username"/>
-        <p:inputText id="username" value="#{userLoginView.username}"/>
+        <p:inputText id="username" value="#{userCreateView.username}"/>
         <p:message for="username"/>
 
         <p:outputLabel for="password" value="Password"/>
-        <p:inputText type="password" id="password" value="#{userLoginView.password}"/>
+        <p:inputText type="password" id="password" value="#{userCreateView.password}"/>
         <p:message for="password"/>
 
         <p:commandButton id="submit" update="@form"
-                         value="Login" action="#{userLoginView.login()}"/>
-        <p:commandButton id="create" update="@form"
-                         value="Create User" action="createuser.xhtml"/>
+                         value="Create" action="#{userCreateView.createUser()}"/>
     </h:panelGrid>
 </h:form>
 </html>

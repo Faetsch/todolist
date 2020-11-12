@@ -71,7 +71,6 @@ public class UserLoginView
                 externalContext.redirect(externalContext.getRequestContextPath() + "/tasks/tasks.xhtml");
                 break;
             case NOT_DONE:
-                break;
         }
     }
 
