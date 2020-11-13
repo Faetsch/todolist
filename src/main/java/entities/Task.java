@@ -1,18 +1,32 @@
 package entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+//import org.hibernate.envers.Audited;
 
+import javax.persistence.*;
+import java.io.Serializable;
+
+
+@NamedQuery(name = Task.FIND_ALL_TASKS_BY_USERNAME, query = "SELECT t FROM Task t WHERE t.owner.username = :username")
 
 @Entity
-public class Task
+//@Audited
+public class Task implements Serializable
 {
+    public static final String FIND_ALL_TASKS_BY_USERNAME = "Task.findAllTasksByUserName";
+
     private String name;
     private String description;
     @Id
     @GeneratedValue
     private int id;
+    @Version
+    private int version;
+
+    private boolean done = false;
+
+    @ManyToOne
+    @JoinColumn(name = "OWNER_ID")
+    private UserLoginDetails owner;
 
     public int getId() {
         return id;
@@ -22,14 +36,29 @@ public class Task
         this.id = id;
     }
 
-    private boolean done = false;
+    public Task(){}
 
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public Task(){}
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public UserLoginDetails getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserLoginDetails owner) {
+        this.owner = owner;
+    }
 
     public String getName() {
         return name;

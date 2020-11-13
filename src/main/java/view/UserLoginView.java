@@ -1,5 +1,7 @@
 package view;
 
+import security.DBIdentityStore;
+
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -29,6 +31,9 @@ public class UserLoginView
 
     @Inject
     private FacesContext facesContext;
+
+    @Inject
+    private DBIdentityStore is;
 
     public UserLoginView(String username, String password) {
         this.username = username;
@@ -62,12 +67,12 @@ public class UserLoginView
                 facesContext.responseComplete();
                 break;
             case SEND_FAILURE:
-                facesContext.addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed", null));
+                FacesMessage succMsg = new FacesMessage("Login Failed");
+                facesContext.addMessage("messages", succMsg);
                 break;
             case SUCCESS:
-                facesContext.addMessage(null,
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Login succeed", null));
+                FacesMessage errMsg = new FacesMessage("Login Succeeded");
+                facesContext.addMessage("messages", errMsg);
                 externalContext.redirect(externalContext.getRequestContextPath() + "/tasks/tasks.xhtml");
                 break;
             case NOT_DONE:

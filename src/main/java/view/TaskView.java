@@ -1,6 +1,7 @@
 package view;
 
 import entities.Task;
+import entities.UserLoginDetails;
 import org.primefaces.event.CellEditEvent;
 import service.TaskService;
 
@@ -10,6 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.security.enterprise.SecurityContext;
 import java.io.Serializable;
 import java.util.List;
 
@@ -22,11 +24,13 @@ public class TaskView implements Serializable
 
     @Inject
     TaskService taskService;
+    @Inject
+    SecurityContext sc;
 
     @PostConstruct
     public void init()
     {
-        tasks = taskService.createTasks();
+        tasks = taskService.getAllTasksByUsername(sc.getCallerPrincipal().getName());
     }
 
     public List<Task> getTasks() {
@@ -50,7 +54,9 @@ public class TaskView implements Serializable
     {
         if(selectedTask != null)
         {
-            tasks.remove(selectedTask);
+            String currUserName = sc.getCallerPrincipal().getName();
+            taskService.deleteTask(selectedTask);
+            tasks = taskService.getAllTasksByUsername(currUserName);
             FacesMessage msg = new FacesMessage("Task deleted", selectedTask.getName());
             FacesContext.getCurrentInstance().addMessage(null, msg);
             selectedTask = null;
@@ -58,13 +64,19 @@ public class TaskView implements Serializable
     }
     public void onAddNew()
     {
+        String currentUser = sc.getCallerPrincipal().getName();
+        UserLoginDetails currUserDetails = taskService.getDetailsByUsername(currentUser);
         Task n = new Task("Empty", "Empty");
-        tasks.add(n);
+
+        n.setOwner(currUserDetails);
+        taskService.createTask(n);
+        tasks = taskService.getAllTasksByUsername(currentUser);
         FacesMessage msg = new FacesMessage("New Task added", n.getName());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public void onCellEdit(CellEditEvent event) {
+    public void onCellEdit(CellEditEvent event)
+    {
         Object oldValue = event.getOldValue();
         Object newValue = event.getNewValue();
 
@@ -79,6 +91,7 @@ public class TaskView implements Serializable
         if(selectedTask != null)
         {
             selectedTask.setDone(selectedTask.isDone() ? false : true);
+            taskService.updateTask(selectedTask);
         }
     }
 }

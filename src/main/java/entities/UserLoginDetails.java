@@ -2,6 +2,7 @@ package entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @NamedQuery(name = UserLoginDetails.FIND_LOGINDETAILS_BY_USERNAME, query = "SELECT d FROM UserLoginDetails d where d.username = :username")
 
@@ -27,6 +28,9 @@ public class UserLoginDetails
     @NotNull
     @Column(columnDefinition = "VARCHAR(255)")
     private String password;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Task> tasks;
 
     public UserLoginDetails() {
 

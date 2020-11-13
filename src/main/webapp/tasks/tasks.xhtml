@@ -27,7 +27,7 @@
 
     <h:form id="form">
         <p:growl id="msgs" showDetail="true"/>
-        <p:dataTable id="tasks" var="task" value="#{taskView.tasks}" rowKey="#{task.name}"
+        <p:dataTable id="tasks" var="task" value="#{taskView.tasks}" rowKey="#{task.id}"
                      selection="#{taskView.selectedTask}" selectionMode="single" editable="true" editMode="cell" widgetVar="tasks" rowStyleClass="#{task.done ? 'done' : 'notDone'}">
             <f:facet name="header">
                 TODO List for #{request.userPrincipal.name}

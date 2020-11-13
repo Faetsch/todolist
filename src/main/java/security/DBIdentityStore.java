@@ -17,12 +17,15 @@ import java.util.HashSet;
 @DatabaseIdentityStoreDefinition(
         dataSourceLookup = "java:/DemoPostgresDB",
         callerQuery = "select password from userlogindetails where username = ?",
-        priority=30)
+        useFor = IdentityStore.ValidationType.VALIDATE,
+        hashAlgorithm = ShittyPasswordHash.class
+)
 public class DBIdentityStore implements IdentityStore
 {
     @Inject
     DatabaseService ds;
 
+    //wird nicht aufgerufen mit @DBIdentityStoreDefintion gesetzt
     @Override
     public CredentialValidationResult validate(Credential credential)
     {
