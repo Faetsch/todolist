@@ -28,11 +28,12 @@
     <h:form id="form">
         <p:growl id="msgs" showDetail="true"/>
         <p:dataTable id="tasks" var="task" value="#{taskView.tasks}" rowKey="#{task.id}"
-                     selection="#{taskView.selectedTask}" selectionMode="single" editable="true" editMode="cell" widgetVar="tasks" rowStyleClass="#{task.done ? 'done' : 'notDone'}">
+                     selection="#{taskView.selectedTask}" selectionMode="single" editable="true" editMode="row" widgetVar="tasks" rowStyleClass="#{task.done ? 'done' : 'notDone'}">
             <f:facet name="header">
                 TODO List for #{request.userPrincipal.name}
             </f:facet>
-            <p:ajax event="cellEdit" listener="#{taskView.onCellEdit}" update=":form:msgs" />
+            <p:ajax event="rowEdit" listener="#{taskView.onRowEdit}" update=":form:msgs tasks" />
+            <p:ajax event="rowEditCancel" listener="#{taskView.onRowCancel}" update=":form:msgs tasks" />
             <p:column headerText="TODO">
                 <p:cellEditor>
                     <f:facet name="output"><h:outputText value="#{task.name}" /></f:facet>
@@ -44,6 +45,10 @@
                     <f:facet name="output"><h:outputText value="#{task.description}" /></f:facet>
                     <f:facet name="input"><p:inputText value="#{task.description}" style="width:96%"/></f:facet>
                 </p:cellEditor>
+            </p:column>
+
+            <p:column style="width:35px">
+                <p:rowEditor />
             </p:column>
         </p:dataTable>
 

@@ -3,6 +3,7 @@ package view;
 import entities.Task;
 import entities.UserLoginDetails;
 import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 import service.TaskService;
 
 import javax.annotation.PostConstruct;
@@ -75,15 +76,20 @@ public class TaskView implements Serializable
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public void onCellEdit(CellEditEvent event)
-    {
-        Object oldValue = event.getOldValue();
-        Object newValue = event.getNewValue();
 
-        if(newValue != null && !newValue.equals(oldValue)) {
-            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Task edited", "From: " + oldValue + ", To:" + newValue);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-        }
+    public void onRowEdit(RowEditEvent event)
+    {
+        String currentUser = sc.getCallerPrincipal().getName();
+        Task editedTask = ((Task)event.getObject());
+        taskService.updateTask(editedTask);
+        tasks = taskService.getAllTasksByUsername(currentUser);
+        FacesMessage msg = new FacesMessage("Task Edited", editedTask.getName());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Edit Cancelled");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void markRowAsDone()
@@ -92,6 +98,8 @@ public class TaskView implements Serializable
         {
             selectedTask.setDone(selectedTask.isDone() ? false : true);
             taskService.updateTask(selectedTask);
+            String currentUser = sc.getCallerPrincipal().getName();
+            tasks = taskService.getAllTasksByUsername(currentUser);
         }
     }
 }
