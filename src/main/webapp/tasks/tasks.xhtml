@@ -46,6 +46,22 @@
                     <f:facet name="input"><p:inputText value="#{task.description}" style="width:96%"/></f:facet>
                 </p:cellEditor>
             </p:column>
+            <p:column headerText="Deadline">
+                <p:cellEditor>
+                    <f:facet name="input"><p:calendar id="button" value="#{task.deadline}" showOn="button" /></f:facet>
+                    <f:facet name="output"><h:outputText value="#{task.deadline}" /></f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="Priority">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{task.priority}" style="width:40%"/></f:facet>
+                    <f:facet name="input"><p:inputText value="#{task.priority}" style="width:60%"/>
+                        <p:selectOneMenu id="taskpriority" value="#{task.priority}">
+                            <f:selectItems value="#{taskView.taskPriorities}" />
+                        </p:selectOneMenu>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
 
             <p:column style="width:35px">
                 <p:rowEditor />
@@ -53,18 +69,18 @@
         </p:dataTable>
 
         <p:contextMenu for="tasks">
-            <p:menuitem value="Delete" update="tasks" icon="pi pi-times" action="#{taskView.onDeleteTask}"/>
-            <p:menuitem value="#{task.done ? 'Mark as TODO' : 'Mark as DONE'}" update="tasks" icon="pi pi-check" action="#{taskView.markRowAsDone}"/>
+            <p:menuitem value="Move to Trash Bin" update="tasks" action="#{taskView.moveTaskToTrashBin}"/>
+            <p:menuitem value="#{task.done ? 'Mark as TODO' : 'Mark as DONE'}" update="tasks" action="#{taskView.markRowAsDone}"/>
+            <p:menuitem value="View History" action="#{taskView.viewHistory}"/>
         </p:contextMenu>
 
 
-        <p:commandButton value="Add new Task" process="@this" update=":form:msgs"
-                         action="#{taskView.onAddNew()}" oncomplete="PF('tasks').addRow();">
+        <p:commandButton value="Add new Task" process="@this" update=":form:msgs tasks"
+                         action="#{taskView.onAddNew()}">
         </p:commandButton>
 
-        <h:form>
-            <p:commandButton value="Logout" action="#{userLogoutView.logout}"/>
-        </h:form>
+        <p:commandButton value="View Trash Bin" action="#{taskView.viewTrashBin}"/>
+        <p:commandButton value="Logout" action="#{userLogoutView.logout}"/>
 
     </h:form>
 </h:body>

@@ -54,6 +54,20 @@ public class DatabaseService
         tasksQuery.setParameter("username", username);
         return tasksQuery.getResultList();
     }
+
+    public List<Task> getAllDeletedTasksByUsername(String username)
+    {
+        TypedQuery<Task> tasksQuery = em.createNamedQuery(Task.FIND_ALL_DELETED_TASKS_BY_USERNAME, Task.class);
+        tasksQuery.setParameter("username", username);
+        return tasksQuery.getResultList();
+    }
+
+    public List<Task> getAllNonDeletedTasksByUsername(String username)
+    {
+        TypedQuery<Task> tasksQuery = em.createNamedQuery(Task.FIND_ALL_NON_DELETED_TASKS_BY_USERNAME, Task.class);
+        tasksQuery.setParameter("username", username);
+        return tasksQuery.getResultList();
+    }
     public void deleteTask(Task t)
     {
         Task task = em.find(Task.class, t.getId());
