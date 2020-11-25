@@ -1,6 +1,7 @@
 package service;
 
 import entities.Task;
+import entities.TrashbinDeletionConfig;
 import entities.UserLoginDetails;
 
 import javax.ejb.Stateless;
@@ -68,6 +69,54 @@ public class DatabaseService
         tasksQuery.setParameter("username", username);
         return tasksQuery.getResultList();
     }
+
+    public List<Task> getAllTasks()
+    {
+        TypedQuery<Task> taskQuery = em.createNamedQuery(Task.FIND_ALL_TASKS, Task.class);
+        return taskQuery.getResultList();
+    }
+
+    public Task findTaskById(int id) throws NoResultException
+    {
+        TypedQuery<Task> taskQuery = em.createNamedQuery(Task.FIND_TASK_BY_ID, Task.class);
+        taskQuery.setParameter("id", id);
+        return taskQuery.getSingleResult();
+    }
+
+    public TrashbinDeletionConfig getTrashbinDeletionConfig() throws NoResultException
+    {
+        TypedQuery<TrashbinDeletionConfig> trashbinDeletionConfigQuery = em.createNamedQuery(TrashbinDeletionConfig.FIND_TRASHBIN_DELETION_CONFIG, TrashbinDeletionConfig.class);
+        try
+        {
+            TrashbinDeletionConfig result = trashbinDeletionConfigQuery.getSingleResult();
+            return result;
+        }
+        catch (NoResultException e)
+        {
+            return null;
+        }
+    }
+
+    public void createDeletionConfig(TrashbinDeletionConfig config)
+    {
+        em.persist(config);
+    }
+
+    public void deleteDeletionConfig()
+    {
+        TrashbinDeletionConfig config = getTrashbinDeletionConfig();
+        if(config != null)
+        {
+            em.remove(config);
+        }
+    }
+
+    public void updateDeletionConfig(TrashbinDeletionConfig config)
+    {
+        deleteDeletionConfig();
+        createDeletionConfig(config);
+    }
+
     public void deleteTask(Task t)
     {
         Task task = em.find(Task.class, t.getId());
@@ -83,4 +132,5 @@ public class DatabaseService
         em.merge(t);
         //em.getTransaction().commit();
     }
+
 }

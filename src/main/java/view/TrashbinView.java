@@ -4,6 +4,7 @@ import entities.Task;
 import org.primefaces.PrimeFaces;
 import org.primefaces.context.PrimeFacesContext;
 import service.DatabaseService;
+import service.TaskService;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.SessionMap;
@@ -20,8 +21,10 @@ public class TrashbinView implements Serializable
 {
     private List<Task> deletedTasks;
     private String username;
+
     @Inject
-    private DatabaseService databaseService;
+    private TaskService taskService;
+    private Task selectedTask;
 
     @PostConstruct
     public void init()
@@ -31,7 +34,7 @@ public class TrashbinView implements Serializable
         if(username != null)
         {
             this.username = username;
-            deletedTasks = databaseService.getAllDeletedTasksByUsername(username);
+            deletedTasks = taskService.getAllDeletedTasksByUsername(username);
         }
         sessionMap.remove("username");
     }
@@ -50,5 +53,20 @@ public class TrashbinView implements Serializable
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Task getSelectedTask() {
+        return selectedTask;
+    }
+
+    public void setSelectedTask(Task selectedTask) {
+        this.selectedTask = selectedTask;
+    }
+
+    public void restoreTask()
+    {
+        System.out.println("Task restored");
+        selectedTask.setDeleted(false);
+        taskService.updateTask(selectedTask);
     }
 }

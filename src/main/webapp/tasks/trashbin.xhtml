@@ -12,7 +12,9 @@
 
 <h:body>
 
-<p:dataTable id="deletedTasks" var="deletedTask" value="#{trashbinView.deletedTasks}">
+<h:form>
+<p:dataTable id="deletedTasks" var="deletedTask" value="#{trashbinView.deletedTasks}" selection="#{trashbinView.selectedTask}"
+             selectionMode="single" widgetVar="deletedTasks" rowKey="#{deletedTask.id}">
     <p:column headerText="Id">
         <h:outputText value="#{deletedTask.id}" />
     </p:column>
@@ -32,7 +34,15 @@
     <p:column headerText="Priority">
         <h:outputText value="#{deletedTask.priority}" />
     </p:column>
+    <p:column headerText="Deletion Time">
+        <h:outputText value="#{deletedTask.deletedAt}" />
+    </p:column>
+
 </p:dataTable>
+    <p:contextMenu for="deletedTasks">
+        <p:menuitem value="Restore task" update="deletedTasks" action="#{trashbinView.restoreTask}"/>
+    </p:contextMenu>
+</h:form>
 </h:body>
 
 </html>

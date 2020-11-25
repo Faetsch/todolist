@@ -26,15 +26,15 @@ public class DBIdentityStore implements IdentityStore
     DatabaseService ds;
 
     //wird nicht aufgerufen mit @DBIdentityStoreDefintion gesetzt
-    @Override
-    public CredentialValidationResult validate(Credential credential)
-    {
-        UsernamePasswordCredential login = (UsernamePasswordCredential) credential;
-        UserLoginDetails details = ds.findLoginDetailsByUsername(login.getCaller());
-        if(details != null && details.getPassword().equals(login.getPasswordAsString()))
-        {
-            return new CredentialValidationResult(login.getCaller(), new HashSet<>(Arrays.asList("ADMIN")));
-        }
-        else return CredentialValidationResult.NOT_VALIDATED_RESULT;
-    }
+//    @Override
+//    public CredentialValidationResult validate(Credential credential)
+//    {
+//        UsernamePasswordCredential login = (UsernamePasswordCredential) credential;
+//        UserLoginDetails details = ds.findLoginDetailsByUsername(login.getCaller());
+//        if(details != null && details.getPassword().equals(login.getPasswordAsString()))
+//        {
+//            return new CredentialValidationResult(login.getCaller(), new HashSet<>(Arrays.asList("ADMIN")));
+//        }
+//        else return CredentialValidationResult.NOT_VALIDATED_RESULT;
+//    }
 }

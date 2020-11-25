@@ -28,7 +28,8 @@
     <h:form id="form">
         <p:growl id="msgs" showDetail="true"/>
         <p:dataTable id="tasks" var="task" value="#{taskView.tasks}" rowKey="#{task.id}"
-                     selection="#{taskView.selectedTask}" selectionMode="single" editable="true" editMode="row" widgetVar="tasks" rowStyleClass="#{task.done ? 'done' : 'notDone'}">
+                     selection="#{taskView.selectedTask}" selectionMode="single" editable="true" editMode="row" widgetVar="tasks"
+                     rowStyleClass="#{task.done ? 'done' : 'notDone'}">
             <f:facet name="header">
                 TODO List for #{request.userPrincipal.name}
             </f:facet>
@@ -48,11 +49,15 @@
             </p:column>
             <p:column headerText="Deadline">
                 <p:cellEditor>
-                    <f:facet name="input"><p:calendar id="button" value="#{task.deadline}" showOn="button" /></f:facet>
-                    <f:facet name="output"><h:outputText value="#{task.deadline}" /></f:facet>
+                    <f:facet name="input"><p:calendar id="button" value="#{task.deadline}" type="localDateTime" showOn="button" pattern="dd/MM/yyyy HH:mm"/></f:facet>
+                    <f:facet name="output">
+                        <h:outputText value="#{task.deadline}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" type="localDateTime"/>
+                        </h:outputText>
+                    </f:facet>
                 </p:cellEditor>
             </p:column>
-            <p:column headerText="Priority">
+            <p:column headerText="Priority" sortBy="#{task.priority.priorityInt}" sortOrder="descending">
                 <p:cellEditor>
                     <f:facet name="output"><h:outputText value="#{task.priority}" style="width:40%"/></f:facet>
                     <f:facet name="input"><p:inputText value="#{task.priority}" style="width:60%"/>
