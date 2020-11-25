@@ -2,6 +2,7 @@ package restservice;
 
 import entities.Task;
 import entities.TrashbinDeletionConfig;
+import security.UltraShittyAuthentificationService;
 import service.TaskService;
 import service.TrashbinDeletionService;
 
@@ -21,11 +22,21 @@ public class RestTaskService
     @Inject
     TrashbinDeletionService tds;
 
+    @Inject
+    UltraShittyAuthentificationService usas;
+
     @Path("{username}/tasks")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTasksForUser(@PathParam("username") String username)
+    public Response getTasksForUser(@PathParam("username") String username, @HeaderParam("User") String user, @HeaderParam("Password") String password)
     {
+        //hyperultramegashitty
+        boolean authenticated = usas.authenticate(user, password);
+        if(!authenticated)
+        {
+            //forbidden
+            return Response.status(403).build();
+        }
         List<Task> tasks = ts.getAllTasksByUsername(username);
         return Response.ok()
                 .entity(tasks)

@@ -1,5 +1,6 @@
 package service;
 
+import entities.APIUserLoginDetails;
 import entities.Task;
 import entities.TrashbinDeletionConfig;
 import entities.UserLoginDetails;
@@ -31,6 +32,20 @@ public class DatabaseService
         }
     }
 
+    public APIUserLoginDetails findAPILoginDetailsByUsername(String username)
+    {
+        try
+        {
+            TypedQuery<APIUserLoginDetails> detailsQuery = em.createNamedQuery(APIUserLoginDetails.FIND_LOGINDETAILS_BY_USERNAME, APIUserLoginDetails.class);
+            detailsQuery.setParameter("username", username);
+            return detailsQuery.getSingleResult();
+        }
+        catch (NoResultException e)
+        {
+            return null;
+        }
+    }
+
     public void createUserLoginDetails(UserLoginDetails details)
     {
         if(findLoginDetailsByUsername(details.getUsername()) != null)
@@ -46,6 +61,7 @@ public class DatabaseService
     {
         //em.getTransaction().begin();
         em.persist(task);
+        em.flush();
         //em.getTransaction().commit();
     }
 
