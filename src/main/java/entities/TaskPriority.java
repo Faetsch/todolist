@@ -5,6 +5,7 @@ public enum TaskPriority
     URGENT("Urgent"), MEDIUM("Medium"), LOW("Low");
 
     private String priorityString;
+    //wird benutzt, um tasks in datatable nach Priorität zu sortieren
     private int priorityInt;
 
     TaskPriority(String s)

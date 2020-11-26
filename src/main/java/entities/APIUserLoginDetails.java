@@ -20,7 +20,7 @@ public class APIUserLoginDetails
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NotNull

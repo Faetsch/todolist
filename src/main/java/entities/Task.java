@@ -25,7 +25,6 @@ import java.util.Date;
 
 @XmlRootElement
 @Entity
-@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Task implements Serializable
 {
     public static final String FIND_ALL_TASKS_BY_USERNAME = "Task.findAllTasksByUserName";
@@ -37,7 +36,7 @@ public class Task implements Serializable
     private String name;
     private String description;
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Version
     private int version;

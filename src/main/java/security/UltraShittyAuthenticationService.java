@@ -12,20 +12,17 @@ import javax.inject.Named;
 
 @ApplicationScoped
 @Named
-public class UltraShittyAuthentificationService
+public class UltraShittyAuthenticationService
 {
     @Inject
     DatabaseService ds;
 
-    //hyperultramegashitty
+    //shitty
     public boolean authenticate(String username, String password)
     {
         APIUserLoginDetails detailsFromDb = ds.findAPILoginDetailsByUsername(username);
 
-        if(detailsFromDb == null)
-        {
-            return false;
-        }
+        if(detailsFromDb == null) { return false; }
         else
         {
             //System.out.println(username + " / " + detailsFromDb.getUsername() + " ---- " + password + " / " + detailsFromDb.getPassword());

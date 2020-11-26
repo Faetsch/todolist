@@ -2,7 +2,7 @@ package restservice;
 
 import entities.Task;
 import entities.TrashbinDeletionConfig;
-import security.UltraShittyAuthentificationService;
+import security.UltraShittyAuthenticationService;
 import service.TaskService;
 import service.TrashbinDeletionService;
 
@@ -23,7 +23,7 @@ public class RestTaskService
     TrashbinDeletionService tds;
 
     @Inject
-    UltraShittyAuthentificationService usas;
+    UltraShittyAuthenticationService usas;
 
     @Path("{username}/tasks")
     @GET

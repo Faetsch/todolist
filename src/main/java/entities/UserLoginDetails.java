@@ -13,14 +13,8 @@ public class UserLoginDetails
 {
     public static final String FIND_LOGINDETAILS_BY_USERNAME = "UserLoginDetails.findLoginDetailsByUsername";
 
-    public UserLoginDetails(@NotNull String username, @NotNull String password)
-    {
-        this.username = username;
-        this.password = password;
-    }
-
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @NotNull
@@ -33,6 +27,12 @@ public class UserLoginDetails
     
     public UserLoginDetails() {
 
+    }
+
+    public UserLoginDetails(@NotNull String username, @NotNull String password)
+    {
+        this.username = username;
+        this.password = password;
     }
 
     public int getId() {
