@@ -1,7 +1,6 @@
 package restservice;
 
 import entities.Task;
-import entities.TrashbinDeletionConfig;
 import security.UltraShittyAuthenticationService;
 import service.TaskService;
 import service.TrashbinDeletionService;
@@ -13,9 +12,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("/")
-public class RestTaskService
+public class TaskEndpoints
 {
+
     @Inject
     TaskService ts;
 
@@ -124,32 +123,6 @@ public class RestTaskService
         {
             return Response.status(406).build();
         }
-    }
-
-    @Path("/delete")
-    @POST
-    public Response deleteOverdueTasks()
-    {
-        tds.deleteOverdueTasksInTrashbin();
-        return Response.ok().build();
-    }
-
-    @Path("/trashbinconfig")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getTrashbinConfig()
-    {
-        TrashbinDeletionConfig config = tds.getDeletionConfig();
-        return Response.ok().entity(config).build();
-    }
-
-    @Path("/trashbinconfig")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response setTrashbinConfig(TrashbinDeletionConfig config)
-    {
-        tds.updateTrashbinConfig(config);
-        return Response.ok().build();
     }
 
 }

@@ -3,11 +3,12 @@ package service;
 import entities.Task;
 import entities.TaskPriority;
 import entities.UserLoginDetails;
+import dao.TaskDAO;
+import dao.UserLoginDetailsDAO;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.NoResultException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,13 +21,16 @@ import java.util.List;
 public class TaskService
 {
     @Inject
-    DatabaseService ds;
+    TaskDAO taskdao;
+
+    @Inject
+    UserLoginDetailsDAO userlogindetailsdao;
 
     public List<Task> getAllNonDeletedTasksByUsername(String username)
     {
         if(username != null)
         {
-            return ds.getAllNonDeletedTasksByUsername(username);
+            return taskdao.getAllNonDeletedTasksByUsername(username);
         }
         else
         {
@@ -38,7 +42,7 @@ public class TaskService
     {
         if(username != null)
         {
-            return ds.getAllTasksByUsername(username);
+            return taskdao.getAllTasksByUsername(username);
         }
         else
         {
@@ -50,7 +54,7 @@ public class TaskService
     {
         if(username != null)
         {
-            return ds.getAllDeletedTasksByUsername(username);
+            return taskdao.getAllDeletedTasksByUsername(username);
         }
         else
         {
@@ -62,7 +66,7 @@ public class TaskService
     {
         if(username != null)
         {
-            return ds.findLoginDetailsByUsername(username);
+            return userlogindetailsdao.findLoginDetailsByUsername(username);
         }
         else throw new IllegalArgumentException(username + " not registered as a user");
     }
@@ -70,7 +74,7 @@ public class TaskService
     public void deleteTask(Task t)
     {
         if(t != null)
-            ds.deleteTask(t);
+            taskdao.deleteTask(t);
     }
 
     public void setOverdueTasksToHighestPriority()
@@ -78,7 +82,7 @@ public class TaskService
         getAllOverdueTasks().stream().forEach(task ->
         {
             task.setPriority(TaskPriority.URGENT);
-            ds.updateTask(task);
+            taskdao.updateTask(task);
         });
     }
 
@@ -86,7 +90,7 @@ public class TaskService
     {
         List<Task> overdueTasks = new ArrayList<Task>();
         LocalDateTime currentLocalDateTime = LocalDateTime.now();
-        List<Task> tasks = ds.getAllTasks();
+        List<Task> tasks = taskdao.getAllTasks();
         for(Task task : tasks)
         {
             if(task.getDeadline() != null)
@@ -107,21 +111,21 @@ public class TaskService
         {
             t.setDeleted(true);
             t.setDeletedAt(LocalDateTime.now());
-            ds.updateTask(t);
+            taskdao.updateTask(t);
         }
     }
 
     public void moveTaskToBin(int id)
     {
-        Task taskToDelete = ds.findTaskById(id);
+        Task taskToDelete = taskdao.findTaskById(id);
         taskToDelete.setDeleted(true);
-        ds.updateTask(taskToDelete);
+        taskdao.updateTask(taskToDelete);
     }
 
     public void createTask(Task t)
     {
         if(t != null)
-            ds.createTask(t);
+            taskdao.createTask(t);
     }
 
     public List<TaskPriority> getAllPriorities()
@@ -131,7 +135,7 @@ public class TaskService
 
     public void updateTask(Task t)
     {
-        ds.updateTask(t);
+        taskdao.updateTask(t);
     }
 
 }

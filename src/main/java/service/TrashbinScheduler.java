@@ -1,6 +1,7 @@
 package service;
 
 import entities.TrashbinDeletionConfig;
+import dao.TrashbinDeletionConfigDAO;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -15,10 +16,10 @@ public class TrashbinScheduler
     private TimerService timerService;
 
     @Inject
-    DatabaseService ds;
+    private TrashbinDeletionConfigDAO trashbinDAO;
 
     @Inject
-    TrashbinDeletionService ts;
+    private TrashbinDeletionService ts;
 
     @PostConstruct
     private void init()
@@ -33,7 +34,7 @@ public class TrashbinScheduler
             t.cancel();
         }
 
-        TrashbinDeletionConfig conf = ds.getTrashbinDeletionConfig();
+        TrashbinDeletionConfig conf = trashbinDAO.getTrashbinDeletionConfig();
         if(conf != null)
         {
             ScheduleExpression schedule = createSchedule(conf.getSecond(), conf.getMinute(), conf.getHour(), conf.getDayOfWeek(), conf.getDayOfMonth(), conf.getMonth(), conf.getYear());
@@ -42,7 +43,7 @@ public class TrashbinScheduler
         else
         {
             TrashbinDeletionConfig newConfig = ts.defaultConfig();
-            ds.updateDeletionConfig(newConfig);
+            trashbinDAO.updateDeletionConfig(newConfig);
             updateScheduleConfig();
         }
     }

@@ -2,8 +2,9 @@ package service;
 
 import entities.Task;
 import entities.TrashbinDeletionConfig;
+import dao.TaskDAO;
+import dao.TrashbinDeletionConfigDAO;
 
-import javax.ejb.Singleton;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.time.Duration;
@@ -14,7 +15,10 @@ import java.util.List;
 public class TrashbinDeletionService
 {
     @Inject
-    private DatabaseService ds;
+    private TrashbinDeletionConfigDAO trashbinDAO;
+
+    @Inject
+    private TaskDAO taskDAO;
 
     public void deleteOverdueTasksInTrashbin()
     {
@@ -24,7 +28,7 @@ public class TrashbinDeletionService
             deletionThreshold = LocalDateTime.now();
         }
 
-        List<Task> tasks = ds.getAllTasks();
+        List<Task> tasks = taskDAO.getAllTasks();
         for(Task task : tasks)
         {
             if(task.getDeadline() != null && task.isDeleted())
@@ -32,7 +36,7 @@ public class TrashbinDeletionService
                 Duration d = Duration.between(deletionThreshold, task.getDeadline());
                 if(d.isNegative())
                 {
-                    ds.deleteTask(task);
+                    taskDAO.deleteTask(task);
                 }
             }
         }
@@ -54,7 +58,7 @@ public class TrashbinDeletionService
 
     public TrashbinDeletionConfig getDeletionConfig()
     {
-        TrashbinDeletionConfig configFromDB = ds.getTrashbinDeletionConfig();
+        TrashbinDeletionConfig configFromDB = trashbinDAO.getTrashbinDeletionConfig();
         return configFromDB == null ? defaultConfig() : configFromDB;
     }
 
@@ -65,6 +69,6 @@ public class TrashbinDeletionService
 
     public void updateTrashbinConfig(TrashbinDeletionConfig config)
     {
-        ds.updateDeletionConfig(config);
+        trashbinDAO.updateDeletionConfig(config);
     }
 }

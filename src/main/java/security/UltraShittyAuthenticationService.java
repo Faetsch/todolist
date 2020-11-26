@@ -3,8 +3,7 @@ package security;
 //vorübergehend, da deklaratives Sichern der resources über web.xml nicht klappt
 
 import entities.APIUserLoginDetails;
-import entities.UserLoginDetails;
-import service.DatabaseService;
+import dao.APIUserLoginDetailsDAO;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -15,12 +14,12 @@ import javax.inject.Named;
 public class UltraShittyAuthenticationService
 {
     @Inject
-    DatabaseService ds;
+    APIUserLoginDetailsDAO apiuserdao;
 
     //shitty
     public boolean authenticate(String username, String password)
     {
-        APIUserLoginDetails detailsFromDb = ds.findAPILoginDetailsByUsername(username);
+        APIUserLoginDetails detailsFromDb = apiuserdao.findAPILoginDetailsByUsername(username);
 
         if(detailsFromDb == null) { return false; }
         else

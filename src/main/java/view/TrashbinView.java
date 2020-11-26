@@ -1,13 +1,10 @@
 package view;
 
 import entities.Task;
-import org.primefaces.PrimeFaces;
 import org.primefaces.context.PrimeFacesContext;
-import service.DatabaseService;
 import service.TaskService;
 
 import javax.annotation.PostConstruct;
-import javax.faces.context.SessionMap;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;

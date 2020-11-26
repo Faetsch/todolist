@@ -1,22 +1,13 @@
 package view;
 
 import entities.UserLoginDetails;
-import service.DatabaseService;
+import dao.UserLoginDetailsDAO;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.security.enterprise.AuthenticationStatus;
-import javax.security.enterprise.SecurityContext;
-import javax.security.enterprise.authentication.mechanism.http.AuthenticationParameters;
-import javax.security.enterprise.credential.UsernamePasswordCredential;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.crypto.Data;
-import java.io.IOException;
 
 @Named
 @RequestScoped
@@ -26,7 +17,7 @@ public class UserCreateView
     private String password;
 
     @Inject
-    DatabaseService ds;
+    private UserLoginDetailsDAO userlogindetailsDAO;
 
     @Inject
     private FacesContext facesContext;
@@ -44,7 +35,7 @@ public class UserCreateView
     {
         try
         {
-            ds.createUserLoginDetails(new UserLoginDetails(username, password));
+            userlogindetailsDAO.createUserLoginDetails(new UserLoginDetails(username, password));
             return "login.xhtml";
         }
         catch (IllegalArgumentException e)
